@@ -1,4 +1,4 @@
-let t = 1500
+let t = 1000
 let key = 0
 let field = []
 let i = 1
@@ -23,7 +23,7 @@ main.innerHTML = field.map(x => x.join("-")).join("<br>")
 
 block = blockList.backL
 
-//let iterator = setInterval(tick, t)
+let iterator = setInterval(tick, t)
 
 document.addEventListener("keydown", function() {
     switch (event.key) {
@@ -56,32 +56,32 @@ document.addEventListener("keydown", function() {
         case "ArrowUp":
             break
         case "ArrowDown":
-            field[block[0][0]][block[0][1]] = field[block[1][0]][block[1][1]] =
-            field[block[2][0]][block[2][1]] = field[block[3][0]][block[3][1]] = 0
-
-            block.forEach(x => x[0]++)
-
-            field[block[0][0]][block[0][1]] = field[block[1][0]][block[1][1]] =
-            field[block[2][0]][block[2][1]] = field[block[3][0]][block[3][1]] = 1
-
-
-            main.innerHTML = field.map(x => x.join("-")).join("<br>")
+            if (block.every(x => x[0] < 19)) {
+                field[block[0][0]][block[0][1]] = field[block[1][0]][block[1][1]] =
+                field[block[2][0]][block[2][1]] = field[block[3][0]][block[3][1]] = 0
+    
+                block.forEach(x => x[0]++)
+    
+                field[block[0][0]][block[0][1]] = field[block[1][0]][block[1][1]] =
+                field[block[2][0]][block[2][1]] = field[block[3][0]][block[3][1]] = 1
+    
+    
+                main.innerHTML = field.map(x => x.join("-")).join("<br>")
+            }
             break
     }
 })
 
-// function tick() {
-//     field[block[0][0]][block[0][1]] = field[block[1][0]][block[1][1]] =
-//     field[block[2][0]][block[2][1]] = field[block[3][0]][block[3][1]] = 1
+function tick() {
+    field[block[0][0]][block[0][1]] = field[block[1][0]][block[1][1]] =
+    field[block[2][0]][block[2][1]] = field[block[3][0]][block[3][1]] = 0
 
-//     field[block[0][0] - 1][block[0][1]] = field[block[1][0] - 1][block[1][1]] =
-//     field[block[2][0] - 1][block[2][1]] = field[block[3][0] - 1][block[3][1]] = 0
+    block.forEach(x => x[0]++)
 
-//     block.forEach(x => x[0]++)
+    field[block[0][0]][block[0][1]] = field[block[1][0]][block[1][1]] =
+    field[block[2][0]][block[2][1]] = field[block[3][0]][block[3][1]] = 1
 
-//     main.innerHTML = field.map(x => x.join("-")).join("<br>")
+    main.innerHTML = field.map(x => x.join("-")).join("<br>")
 
-//     if (i >= 20) {
-//         clearInterval(iterator)
-//     }
-// }
+    if (block.some(x => x[0] >= 19)) clearInterval(iterator)
+}
