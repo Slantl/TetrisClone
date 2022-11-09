@@ -1,14 +1,11 @@
 // objects
 let t = 1000
-let key = 0
 let field = []
-let i = 1
-let j = 0
 let block = []
 let main = document.querySelector("#main")
 const blocksList = {
     line: {
-        yx: [[3, 3], [3, 4], [3, 5], [3, 6]],
+        yx: [[4, 3], [4, 4], [4, 5], [4, 6]],
         rotate: function () {
             field[block.yx[0][0]][block.yx[0][1]] = field[block.yx[1][0]][block.yx[1][1]] = field[block.yx[2][0]][block.yx[2][1]] = 0
             if (this.yx[0][0] == this.yx[1][0]) {
@@ -27,7 +24,10 @@ const blocksList = {
                 this.yx[2][1] -= 1
             }
             field[block.yx[0][0]][block.yx[0][1]] = field[block.yx[1][0]][block.yx[1][1]] = field[block.yx[2][0]][block.yx[2][1]] = 1
-            main.innerHTML = field.map(x => x.join("-")).join("<br>")
+            display()
+        },
+        resetyx: function () {
+            this.yx = [[4, 3], [4, 4], [4, 5], [4, 6]]
         }
     }
 }
@@ -39,11 +39,21 @@ const blocksList = {
 // l: [[0, 3], [1, 3], [1, 4], [1, 5]],
 // backL: [[1, 3], [1, 4], [1, 5], [0, 5]]
 
-for (let i = 0; i <= 24; i++) {
+function display() {
+    let disp = []
+    for (let i = 5; i < 25; i++) {
+        disp[i-5] = field[i].join("-")
+    }
+    disp = disp.join("<br>")
+    
+    main.innerHTML = disp
+}
+
+for (let i = 0; i < 25; i++) {
     field.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 }
 
-main.innerHTML = field.map(x => x.join("-")).join("<br>")
+display()
 
 block = blocksList.line
 
@@ -61,7 +71,7 @@ document.addEventListener("keydown", function() {
                 field[block.yx[0][0]][block.yx[0][1]] = field[block.yx[1][0]][block.yx[1][1]] =
                 field[block.yx[2][0]][block.yx[2][1]] = field[block.yx[3][0]][block.yx[3][1]] = 1
                 
-                main.innerHTML = field.map(x => x.join("-")).join("<br>")
+                display()
             }
             break
         case "ArrowRight":
@@ -74,7 +84,7 @@ document.addEventListener("keydown", function() {
                 field[block.yx[0][0]][block.yx[0][1]] = field[block.yx[1][0]][block.yx[1][1]] =
                 field[block.yx[2][0]][block.yx[2][1]] = field[block.yx[3][0]][block.yx[3][1]] = 1
                 
-                main.innerHTML = field.map(x => x.join("-")).join("<br>")
+                display()
             }
             break
         case "ArrowUp":
@@ -93,7 +103,25 @@ document.addEventListener("keydown", function() {
                 field[block.yx[2][0]][block.yx[2][1]] = field[block.yx[3][0]][block.yx[3][1]] = 1
     
     
-                main.innerHTML = field.map(x => x.join("-")).join("<br>")
+                
+                if (block.yx.some(x => x[0] >= 24) || block.yx.some(x => field[x[0] + 1][x[1]] == 2)) {
+                    field[block.yx[0][0]][block.yx[0][1]] = field[block.yx[1][0]][block.yx[1][1]] =
+                    field[block.yx[2][0]][block.yx[2][1]] = field[block.yx[3][0]][block.yx[3][1]] = 2
+                    
+                    block.resetyx()
+                    block = blocksList.line
+
+                    for (let i = 0; i < field.length; i++) {
+                        if (field[i].every(x => x == 2)) {
+                            console.log("awe")
+                            for (let j = i; j > 0; j--) {
+                                field[j] = field[j - 1]
+                            }
+                        }
+                    }
+                }
+                
+                display()
             }
             break
     }
@@ -108,7 +136,7 @@ function tick() {
     field[block.yx[0][0]][block.yx[0][1]] = field[block.yx[1][0]][block.yx[1][1]] =
     field[block.yx[2][0]][block.yx[2][1]] = field[block.yx[3][0]][block.yx[3][1]] = 1
 
-    main.innerHTML = field.map(x => x.join("-")).join("<br>")
+    display()
 
-    if (block.yx.some(x => x[0] >= 24)) clearInterval(iterator)
+    if (block.yx.some(x => x[0] >= 24) || block.yx.some(x => field[x[0] + 1][x[1]] != 0)) block = JSON.parse(JSON.stringify(blocksList.line))
 }
