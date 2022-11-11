@@ -1,5 +1,7 @@
 // objects
 let t = 1000
+let score = 0
+let adder = 100
 let field = []
 let block = []
 let main = document.querySelector("#main")
@@ -36,7 +38,6 @@ const blocksList = {
     triple: {
         yx: [[4, 3], [3, 4], [4, 4], [4, 5]],
         rotate: function () {
-            tozero()
             if (this.yx[2][0] == this.yx[3][0]) {
                 if (this.yx[2][1] < this.yx[3][1]) {
                     this.yx[3] = [...this.yx[2]]
@@ -60,11 +61,6 @@ const blocksList = {
                     this.yx[3][0] += 2; this.yx[3][1] += 1;
                 }
             }
-            toone()
-            display()
-
-            // +2 +1  -1 +1  -1 -1  +0 -1
-
         },
         resetyx: function () {
             this.yx = [[4, 3], [3, 4], [4, 4], [4, 5]]
@@ -81,8 +77,6 @@ const blocksList = {
                 this.yx[2][0] += 2
                 this.yx[3][1] += 2
             }
-            toone()
-            display()
         },
         resetyx: function () {
             this.yx = [[3, 4], [3, 5], [4, 4], [4, 5]]
@@ -91,7 +85,6 @@ const blocksList = {
     backz: {
         yx: [[4, 4], [4, 5], [3, 5], [3, 6]],
         rotate: function () {
-            tozero()
             if (this.yx[1][0] == this.yx[0][0]) {
                 this.yx[1][0] -= 2
                 this.yx[0][1] += 2
@@ -99,8 +92,6 @@ const blocksList = {
                 this.yx[1][0] += 2
                 this.yx[0][1] -= 2
             }
-            toone()
-            display()
         },
         resetyx: function () {
             this.yx = [[4, 4], [4, 5], [3, 5], [3, 6]]
@@ -109,7 +100,6 @@ const blocksList = {
     l: {
         yx: [[3, 3], [4, 3], [4, 4], [4, 5]],
         rotate: function () {
-            tozero()
             if (this.yx[0][0] != this.yx[1][0]) {
                 if (this.yx[0][0] < this.yx[1][0]) {
                     this.yx[0][0]--; this.yx[0][1] += 2
@@ -133,8 +123,6 @@ const blocksList = {
                     this.yx[3][0] += 2; this.yx[3][1]++
                 }
             }
-            toone()
-            display()
         },
         resetyx: function () {
             this.yx = [[3, 3], [4, 3], [4, 4], [4, 5]]
@@ -143,7 +131,6 @@ const blocksList = {
     backl: {
         yx: [[4, 3], [4, 4], [4, 5], [3, 5]],
         rotate: function () {
-            tozero()
             if (this.yx[0][0] == this.yx[1][0]) {
                 if (this.yx[0][1] < this.yx[1][1]) {
                     this.yx[0][0] -= 2; this.yx[0][1]++
@@ -167,8 +154,6 @@ const blocksList = {
                     this.yx[3][0]++; this.yx[3][1] += 2
                 }
             }
-            toone()
-            display()
         },
         resetyx: function () {
             this.yx = [[4, 3], [4, 4], [4, 5], [3, 5]]
@@ -232,7 +217,7 @@ display()
 
 newblock()
 
-//let iterator = setInterval(tick, t)
+let iterator = setInterval(tick, t)
 
 document.addEventListener("keydown", function() {
     switch (event.key) {
@@ -264,19 +249,10 @@ document.addEventListener("keydown", function() {
         case "ArrowDown":
             if (block.yx.every(x => x[0] < 24) && block.yx.every(x => field[x[0] + 1][x[1]] != 2)) {
                 tozero()
-    
                 block.yx.forEach(x => x[0]++)
-    
                 toone()
                 
-                // if (block.yx.some(x => x[0] >= 24) || block.yx.some(x => field[x[0] + 1][x[1]] == 2)) {
-                //     totwo()
-                    
-                //     block.resetyx()
-                //     newblock()
-
-                // }
-            } else if (block.yx.some(x => x[0] == 24) || block.yx.some(x => x[0 + 1] == 2)) {
+            } else if (block.yx.some(x => x[0] == 24) || block.yx.some(x => field[x[0] + 1][x[1]] == 2)) {
                 totwo()
                 block.resetyx()
                 newblock()
@@ -285,6 +261,7 @@ document.addEventListener("keydown", function() {
                         for (let j = i; j > 0; j--) {
                             field[j] = field[j - 1]
                         }
+                        score += adder
                     }
                 }
             }
@@ -295,28 +272,23 @@ document.addEventListener("keydown", function() {
 })
 
 function tick() {
-    tozero()
-
-    block.yx.forEach(x => x[0]++)
-
-    toone()
-
-    if (block.yx.some(x => x[0] >= 24) || block.yx.some(x => field[x[0] + 1][x[1]] == 2)) {
-        field[block.yx[0][0]][block.yx[0][1]] = field[block.yx[1][0]][block.yx[1][1]] =
-        field[block.yx[2][0]][block.yx[2][1]] = field[block.yx[3][0]][block.yx[3][1]] = 2
+    if (block.yx.every(x => x[0] < 24) && block.yx.every(x => field[x[0] + 1][x[1]] != 2)) {
+        tozero()
+        block.yx.forEach(x => x[0]++)
+        toone()
         
+    } else if (block.yx.some(x => x[0] == 24) || block.yx.some(x => field[x[0] + 1][x[1]] == 2)) {
+        totwo()
         block.resetyx()
         newblock()
-
         for (let i = 0; i < field.length; i++) {
             if (field[i].every(x => x == 2)) {
-                console.log("awe")
                 for (let j = i; j > 0; j--) {
                     field[j] = field[j - 1]
                 }
             }
         }
     }
-
+    
     display()
 }
