@@ -1,10 +1,8 @@
 // objects
-//field by fill
 let t = 800
 let score = 0
 let lines = 0
 let level = 0
-let adder = 100 + 100 * level
 let rnd = Math.floor(Math.random() * 7);
 let field = []
 let block = []
@@ -225,28 +223,32 @@ function newblock() {
             break
         }
         rnd = Math.floor(Math.random() * 7);
-        next.innerHTML = rnd
+        next.style.gridTemplateColumns = "2rem 2rem 2rem"
+        next.style.gridTemplateRows = "2rem 2rem"
         switch (rnd) {
             case 0:
-                next.innerHTML = "<div></div><div></div><div></div><div></div>" + "<div class='two'></div><div class='two'></div><div class='two'></div><div class='two'></div>"
+                next.style.gridTemplateColumns = "2rem 2rem 2rem 2rem"
+                next.style.gridTemplateRows = "2rem"
+                next.innerHTML = "<div class='two'></div><div class='two'></div><div class='two'></div><div class='two'></div>"
                 break
             case 1:
+                next.style.gridTemplateColumns = "2rem 2rem 2rem 2rem"
                 next.innerHTML = "<div></div><div class='two'></div><div class='two'></div><div></div>" + "<div></div><div class='two'></div><div class='two'></div><div></div>"
                 break
             case 2:
-                next.innerHTML = "<div></div><div class='two'></div><div></div><div></div>" + "<div class='two'></div><div class='two'></div><div class='two'></div><div></div>"
+                next.innerHTML = "<div></div><div class='two'></div><div></div>" + "<div class='two'></div><div class='two'></div><div class='two'></div>"
                 break
             case 3:
-                next.innerHTML = "<div class='two'></div><div class='two'></div><div></div><div></div>" + "<div></div><div class='two'></div><div class='two'></div><div></div>"
+                next.innerHTML = "<div class='two'></div><div class='two'></div><div></div>" + "<div></div><div class='two'></div><div class='two'></div>"
                 break
             case 4:
-                next.innerHTML = "<div></div><div class='two'></div><div class='two'></div><div></div>" + "<div class='two'></div><div class='two'></div><div></div><div></div>"
+                next.innerHTML = "<div></div><div class='two'></div><div class='two'></div>" + "<div class='two'></div><div class='two'></div><div></div>"
                 break
             case 5:
-                next.innerHTML = "<div class='two'></div><div></div><div></div><div></div>" + "<div class='two'></div><div class='two'></div><div class='two'></div><div></div>"
+                next.innerHTML = "<div class='two'></div><div></div><div></div>" + "<div class='two'></div><div class='two'></div><div class='two'></div>"
                 break
             case 6:
-                next.innerHTML = "<div></div><div></div><div class='two'></div><div></div>" + "<div class='two'></div><div class='two'></div><div class='two'></div><div></div>"
+                next.innerHTML = "<div></div><div></div><div class='two'></div>" + "<div class='two'></div><div class='two'></div><div class='two'></div>"
                 break
             }
 }
@@ -286,7 +288,8 @@ function down() {
                 // for (let j = x[0]; j > 0; j--) {
                 //     field[j] = [...field[j - 1]]
                 // }
-                score += adder
+                score += 100 + 100 * level
+
                 lines++
                 level = Math.floor(lines / 10)
                 t = 800 - (Math.floor(lines / 10) * 50)

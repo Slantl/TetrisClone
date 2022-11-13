@@ -1,6 +1,9 @@
 :root {
   --black: rgb(1,1,1);
 }
+html {
+  font-size: 16px;
+}
 body {
     background-color: #112;
     height: 100vh;
@@ -48,14 +51,26 @@ body > div {
 }
 
 #nextbox {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   border: 2px solid white;
   text-align: center;
+  width: 8.5rem;
+  height: 7rem;
+}
+
+#nextbox > h1 {
+  top: 0.2rem
 }
 
 #next {
   display: grid;
-  grid-template-columns: 2rem 2rem 2rem 2rem;
+  grid-template-columns: 2rem 2rem 2rem;
   grid-template-rows: 2rem 2rem;
+  justify-content: center;
+  align-content: center;
+  height: 4rem;
 }
 
 #next > .two {
@@ -74,7 +89,7 @@ body > div {
 }
 
 .one {
-  background-color: rgb(166, 166, 166);
+  background-color: #fff;
 }
 
 .two {
