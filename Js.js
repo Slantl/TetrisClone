@@ -2,9 +2,9 @@
 //field by fill
 let t = 800
 let score = 0
-let adder = 100
 let lines = 0
 let level = 0
+let adder = 100 + 100 * level
 let rnd = Math.floor(Math.random() * 7);
 let field = []
 let block = []
@@ -39,6 +39,9 @@ const blocksList = {
     },
     square: {
         yx: [[3, 4], [3, 5], [4, 4], [4, 5]],
+        rotate: function () {
+            this.yx = this.yx
+        },
         resetyx: function () {
             this.yx = [[3, 4], [3, 5], [4, 4], [4, 5]]
         }
@@ -77,7 +80,6 @@ const blocksList = {
     z: {
         yx: [[3, 4], [3, 5], [4, 5], [4, 6]],
         rotate: function () {
-            tozero()
             if (this.yx[2][0] == this.yx[3][0]) {
                 this.yx[2][0] -= 2
                 this.yx[3][1] -= 2
@@ -87,7 +89,7 @@ const blocksList = {
             }
         },
         resetyx: function () {
-            this.yx = [[3, 4], [3, 5], [4, 4], [4, 5]]
+            this.yx = [[3, 4], [3, 5], [4, 5], [4, 6]]
         }
     },
     backz: {
@@ -198,7 +200,7 @@ function display() {
 }
 
 function newblock() {
-    let next = Array(4).fill().map(() => Array(3).fill("<div class='zero'></div>"))
+    //let next = Array(4).fill().map(() => Array(3).fill("<div class='zero'></div>"))
     switch (rnd) {
         case 0:
             block = blocksList.line
@@ -223,29 +225,28 @@ function newblock() {
             break
         }
         rnd = Math.floor(Math.random() * 7);
-        //next.innerHTML = rnd
+        next.innerHTML = rnd
         switch (rnd) {
             case 0:
-                next[0][1] = next[1][1] = 
-                next[2][1] = next[3][1] = '<div id="second"></div>'
+                next.innerHTML = "<div></div><div></div><div></div><div></div>" + "<div class='two'></div><div class='two'></div><div class='two'></div><div class='two'></div>"
                 break
             case 1:
-                block = blocksList.square
+                next.innerHTML = "<div></div><div class='two'></div><div class='two'></div><div></div>" + "<div></div><div class='two'></div><div class='two'></div><div></div>"
                 break
             case 2:
-                block = blocksList.triple
+                next.innerHTML = "<div></div><div class='two'></div><div></div><div></div>" + "<div class='two'></div><div class='two'></div><div class='two'></div><div></div>"
                 break
             case 3:
-                block = blocksList.z
+                next.innerHTML = "<div class='two'></div><div class='two'></div><div></div><div></div>" + "<div></div><div class='two'></div><div class='two'></div><div></div>"
                 break
             case 4:
-                block = blocksList.backz
+                next.innerHTML = "<div></div><div class='two'></div><div class='two'></div><div></div>" + "<div class='two'></div><div class='two'></div><div></div><div></div>"
                 break
             case 5:
-                block = blocksList.l
+                next.innerHTML = "<div class='two'></div><div></div><div></div><div></div>" + "<div class='two'></div><div class='two'></div><div class='two'></div><div></div>"
                 break
             case 6:
-                block = blocksList.backl
+                next.innerHTML = "<div></div><div></div><div class='two'></div><div></div>" + "<div class='two'></div><div class='two'></div><div class='two'></div><div></div>"
                 break
             }
 }
@@ -299,7 +300,7 @@ function down() {
     display()
     if (field[5].some(x => x == 2)) {
         clearInterval(iterator)
-        main.innerHTML = "Game Over"
+        main.innerHTML = "<h1>Game Over</h1>"
     }
 }
 
@@ -329,7 +330,7 @@ document.addEventListener("keydown", function() {
         case "ArrowUp":
             tozero()
             block.rotate()
-            if (!block.yx.every(x => field[x[0]][x[1]] != 2)) {
+            if (!block.yx.every(x => field[x[0]][x[1]] != 2 && x[1] >= 0 && x[1] <= 9)) {
                 block.rotate(); block.rotate(); block.rotate()
             }
             toone()

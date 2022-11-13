@@ -32,6 +32,15 @@ body > div {
   border: 2px solid white;
 }
 
+#main > h1 {
+  grid-row: 1 / -1;
+  grid-column: 1 / -1;
+  text-align: center;
+  justify-content: center;
+  height: 40rem;
+  line-height: 40rem;
+}
+
 #main > div {
   width: 2rem;
   height: 2rem;
@@ -41,13 +50,16 @@ body > div {
 #nextbox {
   border: 2px solid white;
   text-align: center;
-  height: 16rem;
 }
 
 #next {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 2rem 2rem 2rem 2rem;
+  grid-template-rows: 2rem 2rem;
+}
+
+#next > .two {
+  border: 1px solid #224;
 }
 
 #stuff {
