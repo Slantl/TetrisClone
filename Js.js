@@ -307,6 +307,14 @@ function down() {
     }
 }
 
+document.querySelector("#restart").addEventListener("click", function() {
+    field = Array(25).fill().map(() => Array(10).fill("<div class='zero'></div>"))
+    lines = level = score = 0
+    block.resetyx()
+    newblock()
+    display()
+})
+
 field = Array(25).fill().map(() => Array(10).fill("<div class='zero'></div>"))
 
 newblock()
